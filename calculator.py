@@ -1,4 +1,5 @@
 import sys
+import re
 
 def organize(arg:str) -> str:
   """function used for organizing expression
@@ -27,17 +28,21 @@ def organize(arg:str) -> str:
   
   return arg
 
-def check_expression(arg:str) -> bool:
+def check_special_symbols(arg:str) -> bool:
   """function used for checking special symbols
     Args:
         arg (str): expression
     Returns:
         bool
     """
-  if any(sym in arg for sym in '~!@#$%^&_`=,<>?:";\'\\|(){}[]ㄱ-힣'):
+  
+  str = re.sub(r"[+--*/0-9]", "", arg)
+  
+  if not str.isspace():  #특수문자 거르기
     return True
   
   return False
+
 
 def isAdd(arg:list) -> bool:
   """function used for checking "+"
@@ -209,16 +214,15 @@ def next_calculation():
 
 if __name__ == "__main__":
   while True:
-    expresion = input("Enter expression: ")
+    expresion = input("\nEnter expression: ")
     expresion = organize(expresion)
 
-    if check_expression(expresion):
-      print("Invalid Input")
+    if check_special_symbols(expresion):
+      print("Invalid Input.")
       next_calculation()
       continue
-
+    
     expresion_list = expresion.split()
-
 
     while len(expresion_list) != 1:
         expresson_list = calculation(expresion_list)
