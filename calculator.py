@@ -27,6 +27,18 @@ def organize(arg:str) -> str:
   
   return arg
 
+def check_expression(arg:str) -> bool:
+  """function used for checking special symbols
+    Args:
+        arg (str): expression
+    Returns:
+        bool
+    """
+  if any(sym in arg for sym in '~!@#$%^&_`=,<>?:";\'\\|(){}[]ㄱ-힣'):
+    return True
+  
+  return False
+
 def isAdd(arg:list) -> bool:
   """function used for checking "+"
     Args:
@@ -176,29 +188,41 @@ def calculation(arg1: list) -> list:
     
     return result
 
-if __name__ == "__main__":
-    
-    while True:
-      expresion = input("수식 입력: ")
-      expresion = organize(expresion)
-      expresion_list = expresion.split()
+def next_calculation():
+  """function used for starting next calculation
+    """
+  while True:
+    # check if user wants another calculation
+    # break the while loop if answer is no
+    next_calculation = input("Do next calculation? [y/n]: ")
+    if next_calculation in ("y", "n"):
+      if next_calculation == "y":
+        break
+        
+      elif next_calculation == "n":
+        sys.exit()
+      
+    else:
+      print("Invalid Input")
+      continue
       
 
-      while len(expresion_list) != 1:
-          expresson_list = calculation(expresion_list)
+if __name__ == "__main__":
+  while True:
+    expresion = input("Enter expression: ")
+    expresion = organize(expresion)
 
-      print(expresion + " = %f\n" %expresion_list[0])
+    if check_expression(expresion):
+      print("Invalid Input")
+      next_calculation()
+      continue
 
-      # check if user wants another calculation
-      # break the while loop if answer is no
+    expresion_list = expresion.split()
 
-      while True:
-        next_calculation = input("Do next calculation? [y/n]: ")
-        if next_calculation in ("y", "n"):
-          if next_calculation == "y":
-              break
-          elif next_calculation == "n":
-              sys.exit()
-        else:
-              print("Invalid Input")
-              continue
+
+    while len(expresion_list) != 1:
+        expresson_list = calculation(expresion_list)
+
+    print(expresion + " = %f\n" %expresion_list[0])
+
+    next_calculation()
