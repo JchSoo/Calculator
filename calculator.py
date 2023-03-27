@@ -33,16 +33,47 @@ def check_special_symbols(arg:str) -> bool:
     Args:
         arg (str): expression
     Returns:
-        bool
+        correct expression : False
+        wrong expression   : True
     """
   
   str = re.sub(r"[+--*/0-9]", "", arg)
   
-  if not str.isspace():  #특수문자 거르기
+  if not str.isspace():
     return True
   
   return False
 
+def check_correct_expression(arg1:list) -> bool:
+  """function used for checking expression
+    Args:
+        arg (str): expression
+    Returns:
+        correct expresion: False
+        worng expression : True
+    """
+  state = "operator"
+  key = "correct"
+
+  for i in range(len(arg1)):
+      if key == "error":
+          return True
+      
+      try:
+          int(arg1[i]) 
+
+          if state == "num":
+              key = "error" 
+        
+          state = "num"
+
+      except:            
+          if state == "operator":    
+              key = "error"
+    
+          state = "operator"
+  
+  return False
 
 def isAdd(arg:list) -> bool:
   """function used for checking "+"
@@ -216,13 +247,14 @@ if __name__ == "__main__":
   while True:
     expresion = input("\nEnter expression: ")
     expresion = organize(expresion)
+    expresion_list = expresion.split()
 
-    if check_special_symbols(expresion):
+    #check the expression
+    #if the expression is wrong, go back
+    if check_special_symbols(expresion) or check_correct_expression(expresion_list):   
       print("Invalid Input.")
       next_calculation()
       continue
-    
-    expresion_list = expresion.split()
 
     while len(expresion_list) != 1:
         expresson_list = calculation(expresion_list)
