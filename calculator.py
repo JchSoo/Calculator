@@ -37,7 +37,7 @@ def check_special_symbols(arg:str) -> bool:
         wrong expression   : True
     """
   
-  str = re.sub(r"[+--*/0-9]", "", arg)
+  str = re.sub('[+*/-]|[0-9]',"", arg)
   
   if not str.isspace():
     return True
