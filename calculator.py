@@ -57,7 +57,7 @@ def check_correct_expression(arg1:list) -> bool:
 
   for i in range(len(arg1)):
       if key == "error":
-          return True
+          break
       
       try:
           int(arg1[i]) 
@@ -72,8 +72,10 @@ def check_correct_expression(arg1:list) -> bool:
               key = "error"
     
           state = "operator"
-  
-  return False
+
+  if key == "error" or state == "operator":
+    return True
+  else: return False
 
 def isAdd(arg:list) -> bool:
   """function used for checking "+"
